@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "ragit"
+version = "0.1.0"
+description = "Application that applies the LLM Chatbot model on any sources of writing."
+authors = ["William D'Onofrio <16698591+wdonofrio@users.noreply.github.com>"]
+license = "LICENSE"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+langchain = "^0.1.20"
+chromadb = "^0.5.0"
+pypdf = "^4.2.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.0"
+mypy = "^1.10.0"
+ipykernel = "^6.29.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
