@@ -9,13 +9,12 @@ from ragit.embedding import get_embedding
 CHROMA_PATH = "chroma"
 
 PROMPT_TEMPLATE = """
-Answer the question based only on the following context:
+Question: {question}
 
-{context}
-
+Context:
 ---
-
-Answer the question based on the above context: {question}
+{context}
+---
 """
 
 
@@ -28,19 +27,25 @@ def main():
     query_rag(query_text)
 
 
-def query_rag(query_text: str):
+def query_rag(query_text: str, debug: bool = False, threshold: float = 300):
     # Prepare the DB.
     embedding_function = get_embedding()
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
 
     # Search the DB.
     print(f"Querying with: {query_text}")
-    results = db.similarity_search_with_score(query_text, k=5)
+    results = [
+        (text, score)
+        for text, score in db.similarity_search_with_score(query_text, k=15)
+        if score < threshold
+    ]
+    if debug:
+        for text, score in results:
+            print(f"Score: {score} - {text}")
 
     context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
     prompt = prompt_template.format(context=context_text, question=query_text)
-    print(prompt)
 
     print("Generating response...")
     model = Ollama(model="gemma:2b")
@@ -48,8 +53,7 @@ def query_rag(query_text: str):
 
     sources = [doc.metadata.get("id", None) for doc, _score in results]
     formatted_response = f"Response: {response_text}\nSources: {sources}"
-    print(formatted_response)
-    return response_text
+    return formatted_response
 
 
 if __name__ == "__main__":

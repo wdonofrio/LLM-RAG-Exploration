@@ -1,6 +1,10 @@
-from ragit.embedding import get_embedding
-from langchain.vectorstores.chroma import Chroma
+import os
+import shutil
+
 from langchain.schema.document import Document
+from langchain.vectorstores.chroma import Chroma
+
+from ragit.embedding import get_embedding
 
 CHROMA_PATH = "chroma"
 DATA_PATH = "data"
@@ -60,3 +64,8 @@ def calculate_chunk_ids(chunks: list[Document]) -> list[Document]:
         chunk.metadata["id"] = chunk_id
 
     return chunks
+
+
+def clear_database():
+    if os.path.exists(CHROMA_PATH):
+        shutil.rmtree(CHROMA_PATH)
