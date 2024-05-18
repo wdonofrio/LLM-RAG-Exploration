@@ -1,3 +1,5 @@
+"""Query logic for the RAG model."""
+
 import argparse
 
 from langchain.prompts import ChatPromptTemplate
@@ -18,7 +20,8 @@ Context:
 """
 
 
-def main():
+def main() -> None:
+    """Main function to run the CLI."""
     # Create CLI.
     parser = argparse.ArgumentParser()
     parser.add_argument("query_text", type=str, help="The query text.")
@@ -27,7 +30,17 @@ def main():
     query_rag(query_text)
 
 
-def query_rag(query_text: str, debug: bool = False, threshold: float = 300):
+def query_rag(query_text: str, debug: bool = False, threshold: float = 300) -> str:
+    """Query the RAG model with the given text.
+
+    Args:
+        query_text (str): The query text.
+        debug (bool, optional): Prints additional information. Defaults to False.
+        threshold (float, optional): Threshold of score in RAG query. Defaults to 300.
+
+    Returns:
+        str: Returns the formatted response to the query.
+    """
     # Prepare the DB.
     embedding_function = get_embedding()
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)

@@ -11,11 +11,14 @@ python = "^3.10"
 langchain = "^0.1.20"
 chromadb = "^0.5.0"
 pypdf = "^4.2.0"
+cryptography = "^42.0.7"
+nltk = "^3.8.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.0"
-mypy = "^1.10.0"
 ipykernel = "^6.29.4"
+pre-commit = "^3.7.1"
+pylint = "^3.2.0"
 
 [build-system]
 requires = ["poetry-core"]

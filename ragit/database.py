@@ -1,3 +1,5 @@
+"""Database functions for Ragit."""
+
 import os
 import shutil
 
@@ -10,7 +12,12 @@ CHROMA_PATH = "chroma"
 DATA_PATH = "data"
 
 
-def add_to_chroma(chunks: list[Document]):
+def add_to_chroma(chunks: list[Document]) -> None:
+    """Add the chunks to the Chroma database.
+
+    Args:
+        chunks (list[Document]): List of Document objects.
+    """
     # Load the existing database.
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=get_embedding())
 
@@ -28,7 +35,7 @@ def add_to_chroma(chunks: list[Document]):
         if chunk.metadata["id"] not in existing_ids:
             new_chunks.append(chunk)
 
-    if len(new_chunks):
+    if new_chunks:
         print(f"👉 Adding new documents: {len(new_chunks)}")
         new_chunk_ids = [chunk.metadata["id"] for chunk in new_chunks]
         db.add_documents(new_chunks, ids=new_chunk_ids)
@@ -38,7 +45,7 @@ def add_to_chroma(chunks: list[Document]):
 
 
 def calculate_chunk_ids(chunks: list[Document]) -> list[Document]:
-
+    """Calculate the chunk IDs for each chunk."""
     # This will create IDs like "data/monopoly.pdf:6:2"
     # Page Source : Page Number : Chunk Index
 
@@ -66,6 +73,7 @@ def calculate_chunk_ids(chunks: list[Document]) -> list[Document]:
     return chunks
 
 
-def clear_database():
+def clear_database() -> None:
+    """Clear the database."""
     if os.path.exists(CHROMA_PATH):
         shutil.rmtree(CHROMA_PATH)

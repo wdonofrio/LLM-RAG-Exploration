@@ -10,7 +10,7 @@ from langchain.document_loaders.pdf import PyPDFDirectoryLoader
 from langchain.schema.document import Document
 
 
-def load_documents(path: Path) -> list[Document]:
+def load_documents(path: Path) -> List[Document]:
     """Load documents from a directory containing files.
 
     Args:
@@ -19,12 +19,12 @@ def load_documents(path: Path) -> list[Document]:
     Returns:
         list[Document]: Returns PyPDFDirectoryLoader object.
     """
-    return PyPDFDirectoryLoader(path).load()
+    return PyPDFDirectoryLoader(path).load()  # type: ignore
 
 
 def split_documents(
-    documents: List[str], max_chunk_size: int = 200, chunk_overlap: int = 50
-) -> List[str]:
+    documents: List[Document], max_chunk_size: int = 200, chunk_overlap: int = 50
+) -> List[Document]:
     """Split documents into smaller chunks, preserving sentence boundaries.
 
     Args:

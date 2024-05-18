@@ -1,3 +1,5 @@
+"""This module is used to get the embedding object."""
+
 from langchain_community.embeddings import OllamaEmbeddings
 
 
